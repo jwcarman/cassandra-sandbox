@@ -4,13 +4,13 @@ import com.carmanconsulting.cassandra.entity.Person;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class CassandraTemplateTest extends CassandraTestCase {
+public class PojoMappingTest extends CassandraTestCase {
 //----------------------------------------------------------------------------------------------------------------------
 // Other Methods
 //----------------------------------------------------------------------------------------------------------------------
 
     @Test
-    public void testPojoDelete() {
+    public void testDelete() {
         Person p = newPerson();
         template.insert(p);
         template.delete(p);
@@ -18,7 +18,7 @@ public class CassandraTemplateTest extends CassandraTestCase {
     }
 
     @Test
-    public void testPojoInsert() {
+    public void testInsert() {
         Person p = newPerson();
         template.insert(p);
         assertEntityExists(p);
@@ -32,7 +32,7 @@ public class CassandraTemplateTest extends CassandraTestCase {
     }
 
     @Test
-    public void testPojoUpdate() {
+    public void testUpdate() {
         Person p = newPerson();
         template.insert(p);
         p.setLastName("CassandraXXX");
