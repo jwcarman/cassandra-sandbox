@@ -10,18 +10,18 @@ public class CassandraTemplateTest extends CassandraTestCase {
 //----------------------------------------------------------------------------------------------------------------------
 
     @Test
-    public void testPojoInsert() {
-        Person p = newPerson();
-        template.insert(p);
-        assertEntityExists(p);
-    }
-
-    @Test
     public void testPojoDelete() {
         Person p = newPerson();
         template.insert(p);
         template.delete(p);
         assertEntityDoesNotExist(p);
+    }
+
+    @Test
+    public void testPojoInsert() {
+        Person p = newPerson();
+        template.insert(p);
+        assertEntityExists(p);
     }
 
     private Person newPerson() {
@@ -40,6 +40,4 @@ public class CassandraTemplateTest extends CassandraTestCase {
         Person result = findEntity(p);
         assertEquals("CassandraXXX", result.getLastName());
     }
-
-
 }
