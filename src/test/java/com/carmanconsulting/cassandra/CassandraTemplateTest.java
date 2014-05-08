@@ -1,11 +1,7 @@
 package com.carmanconsulting.cassandra;
 
 import com.carmanconsulting.cassandra.entity.Person;
-import com.datastax.driver.core.querybuilder.QueryBuilder;
-import com.datastax.driver.core.querybuilder.Select;
 import org.junit.Test;
-
-import java.util.List;
 import static org.junit.Assert.*;
 
 public class CassandraTemplateTest extends CassandraTestCase {
@@ -14,14 +10,36 @@ public class CassandraTemplateTest extends CassandraTestCase {
 //----------------------------------------------------------------------------------------------------------------------
 
     @Test
-    public void testPojoMapping() {
+    public void testPojoInsert() {
+        Person p = newPerson();
+        template.insert(p);
+        assertEntityExists(p);
+    }
+
+    @Test
+    public void testPojoDelete() {
+        Person p = newPerson();
+        template.insert(p);
+        template.delete(p);
+        assertEntityDoesNotExist(p);
+    }
+
+    private Person newPerson() {
         Person p = new Person();
         p.setFirstName("Hello");
         p.setLastName("Cassandra");
-        template.insert(p);
-        Select select = QueryBuilder.select().all().from("Person");
-        final List<Person> people = template.select(select, Person.class);
-        assertEquals(1, people.size());
-        assertEquals(p, people.get(0));
+        return p;
     }
+
+    @Test
+    public void testPojoUpdate() {
+        Person p = newPerson();
+        template.insert(p);
+        p.setLastName("CassandraXXX");
+        template.update(p);
+        Person result = findEntity(p);
+        assertEquals("CassandraXXX", result.getLastName());
+    }
+
+
 }
