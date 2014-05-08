@@ -1,6 +1,8 @@
 package com.carmanconsulting.cassandra;
 
 import com.carmanconsulting.cassandra.entity.Person;
+import com.datastax.driver.core.querybuilder.QueryBuilder;
+import com.datastax.driver.core.querybuilder.Select;
 import org.junit.Test;
 
 import java.util.List;
@@ -17,7 +19,8 @@ public class CassandraTemplateTest extends CassandraTestCase {
         p.setFirstName("Hello");
         p.setLastName("Cassandra");
         template.insert(p);
-        final List<Person> people = template.queryForList("select * from Person", Person.class);
+        Select select = QueryBuilder.select().all().from("Person");
+        final List<Person> people = template.select(select, Person.class);
         assertEquals(1, people.size());
         assertEquals(p, people.get(0));
     }
